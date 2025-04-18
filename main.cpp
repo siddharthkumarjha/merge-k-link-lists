@@ -25,7 +25,7 @@ class defer_impl
 public:
     defer_impl() = delete;
     defer_impl(auto &&func) : m_Func(std::move(func)) {}
-    defer_impl &operator=(auto &&func)
+    auto operator=(auto &&func) -> defer_impl &
     {
         m_Func = std::move(func);
         return *this;
@@ -57,8 +57,8 @@ struct ListNode
 
 class Solution
 {
-    std::pair<ListNode **, size_t> splice_list(ListNode **lastNode,
-                                               ListNode *newHead)
+    auto splice_list(ListNode **lastNode, ListNode *newHead)
+        -> std::pair<ListNode **, size_t>
     {
         size_t n    = 0;
         *(lastNode) = newHead;
@@ -75,7 +75,8 @@ class Solution
         requires requires(Iter it) {
             { *it } -> std::convertible_to<ListNode *>;
         }
-    std::pair<ListNode *, size_t> flatten_list(Iter list_begin, Iter list_end)
+    auto flatten_list(Iter list_begin, Iter list_end)
+        -> std::pair<ListNode *, size_t>
     {
         while (list_begin != list_end && *list_begin == nullptr)
             ++list_begin;
@@ -97,7 +98,7 @@ class Solution
         return {head.next, n};
     }
 
-    ListNode *merge(ListNode *l1, ListNode *l2)
+    auto merge(ListNode *l1, ListNode *l2) -> ListNode *
     {
         ListNode dummy;
         ListNode *tail = &dummy;
@@ -119,7 +120,7 @@ class Solution
         tail->next = (l1 != nullptr) ? l1 : l2;
         return dummy.next;
     }
-    ListNode *merge_sort(ListNode *head, size_t n)
+    auto merge_sort(ListNode *head, size_t n) -> ListNode *
     {
         if (n <= 1)
             return head;
@@ -140,7 +141,7 @@ class Solution
     }
 
 public:
-    ListNode *mergeKLists(std::vector<ListNode *> &lists)
+    auto mergeKLists(std::vector<ListNode *> &lists) -> ListNode *
     {
         if (lists.size() <= 0)
             return nullptr;
@@ -150,7 +151,7 @@ public:
     }
 };
 
-void print_linked_list(ListNode *node)
+auto print_linked_list(ListNode *node) -> void
 {
     const char *sep = "[";
     if (node == nullptr)
@@ -174,7 +175,7 @@ void print_linked_list(ListNode *node)
     std::cout << "]";
 }
 
-void gc(ListNode *&head)
+auto gc(ListNode *&head) -> void
 {
     ListNode *cur = nullptr;
     while (head != nullptr)
@@ -187,7 +188,7 @@ void gc(ListNode *&head)
     head = nullptr;
 }
 
-ListNode *&add_node(ListNode *&head, int val)
+auto add_node(ListNode *&head, int val) -> ListNode *&
 {
     ListNode *node = new ListNode(val);
     node->next     = head;
@@ -195,7 +196,7 @@ ListNode *&add_node(ListNode *&head, int val)
     return head;
 }
 
-ListNode *make_list(std::initializer_list<int> vals)
+auto make_list(std::initializer_list<int> vals) -> ListNode *
 {
     ListNode *head              = nullptr;
     ListNode **head_indirection = &head;
@@ -207,7 +208,7 @@ ListNode *make_list(std::initializer_list<int> vals)
     return head;
 }
 
-int main()
+auto main() -> int
 {
     std::vector<ListNode *> lists;
     defer
